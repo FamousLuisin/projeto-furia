@@ -11,10 +11,11 @@ A interface é desenvolvida utilizando **TypeScript** com **React**, por ser uma
 
 ## Back-end
 
-A API é desenvolvida com **Java** utilizando o **Spring Boot**, escolhidos pela robustez, segurança e pela grande quantidade de conteúdo e soluções na internet. A estrutura do projeto seguirá boas práticas de versionamento de banco de dados com o uso do **Flyway**. Além disso, é usado o **Gradle** como build tool, por ser bem simples, rápida e também por minha familiaridade.
+A API é desenvolvida com **Java** utilizando o **Spring Boot**, escolhidos pela robustez, segurança e pela grande quantidade de conteúdo e soluções na internet. A estrutura do projeto seguirá boas práticas de versionamento de banco de dados com o uso do **Flyway**. Além disso, é usado o **Gradle** como build tool, por ser bem simples, rápida e também por minha familiaridade. Também é usado como meio de autenticação e autorização o **oauth2-resource-server** junto com um token **jwt** que é criptografado usando criptográfia assimétrica.
 
-- **Linguagem:** Java
-- **Framework:** Spring Boot
+- **Linguagem:** Java 21
+- **Framework:** Spring Boot 3.4.5
+- **Bibliotecas:** modelmapper, lombok,
 - **Versionamento de banco:** Flyway
 - **Build:** Gradle
 
