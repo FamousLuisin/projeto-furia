@@ -10,6 +10,8 @@ import com.furia.challenge.api.models.users.dto.LoginRequest;
 import com.furia.challenge.api.models.users.dto.LoginResponse;
 import com.furia.challenge.api.services.UserService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,14 +24,18 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody LoginRequest data) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest data, HttpServletResponse response) {
         
         try {
             String tokenJwt = userService.LoginUser(data);
-            LoginResponse response = new LoginResponse();
-            response.setAccessToken(tokenJwt);
-
-            return ResponseEntity.ok(response);
+        
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setMsg("Login efetuado com sucesso");
+        
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + tokenJwt)
+                    .body(loginResponse);
+        
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
         }

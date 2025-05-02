@@ -5,5 +5,5 @@ import lombok.Setter;
 
 @Getter @Setter
 public class LoginResponse {
-    private String accessToken;
+    private String msg;
 }

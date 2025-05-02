@@ -21,7 +21,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-@Entity(name = "tb_message") @Table(name = "tb_message")
+@Entity(name = "tb_messages") @Table(name = "tb_messages")
 public class MessageModel implements Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class MessageModel implements Serializable{
     private String content;
     private Calendar sent_at;
     private Calendar edited_at;
-    private Boolean is_deleted;
+    private Boolean is_deleted = false;
 
     @ManyToOne @JoinColumn(name = "sender_id")
     private UserModel user;
@@ -38,7 +38,8 @@ public class MessageModel implements Serializable{
     @ManyToOne @JoinColumn(name = "chat_id")
     private ChatModel chat;
 
-    public MessageModel(String content){
+    public MessageModel(String content, Calendar sent_at){
         this.content = content;
+        this.sent_at = sent_at;
     }
 }

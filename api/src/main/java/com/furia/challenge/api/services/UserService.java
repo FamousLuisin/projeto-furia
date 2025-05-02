@@ -69,7 +69,7 @@ public class UserService {
 
         var claims = JwtClaimsSet.builder()
             .issuer("furia_api")
-            .subject(user.get().getEmail())
+            .subject(user.get().getUsername())
             .issuedAt(now)
             .expiresAt(now.plusSeconds(expiresIn))
             .build();
