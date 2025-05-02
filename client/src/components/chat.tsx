@@ -38,6 +38,8 @@ export default function LiveChat() {
         console.log("🟢 Conectado ao WebSocket");
         setConnectionError(false);
 
+        getMessages();
+
         stompClient.subscribe("/topics/furia/livechat", (message: IMessage) => {
           const body: MessageOutput = JSON.parse(message.body);
           console.log("📨 Nova mensagem recebida:", body);
@@ -91,6 +93,29 @@ export default function LiveChat() {
     setNewMessage("");
   };
 
+  async function getMessages() {
+    const token = localStorage.getItem("token");
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ?? "",
+      },
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/messages", options);
+
+      if (response.ok) {
+        const listMessage: MessageOutput[] = await response.json();
+        setMessages((prev) => [...prev, ...listMessage]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function getSubFromToken(): string | null {
     const token = localStorage.getItem("token");
 
@@ -121,8 +146,8 @@ export default function LiveChat() {
           </div>
         </div>
 
-        <div className="flex-grow overflow-hidden">
-          <div className="h-[60vh] overflow-y-auto p-4 space-y-3">
+        <div className="flex-grow overflow-hidden scrollbar">
+          <div className="h-[65vh] overflow-y-auto p-4 space-y-3">
             {connectionError && (
               <div className="bg-red-900/70 border border-red-700 text-white p-4 rounded-lg mb-4">
                 <div className="flex items-center gap-2">

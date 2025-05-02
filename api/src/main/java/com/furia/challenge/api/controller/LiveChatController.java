@@ -36,7 +36,7 @@ public class LiveChatController {
         Optional<ChatModel> chat = chatRepository.findByTitle("cs:go");
 
         newMessage.setContent(message.getContent());
-        newMessage.setSent_at(message.getSent_at());
+        newMessage.setSentAt(message.getSent_at());
         newMessage.setUser(user.get());
         newMessage.setChat(chat.get());
 

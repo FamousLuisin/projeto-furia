@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.furia.challenge.api.models.chats.ChatModel;
 import com.furia.challenge.api.models.users.UserModel;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +29,9 @@ public class MessageModel implements Serializable{
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String content;
-    private Calendar sent_at;
+    
+    @Column(name = "sent_at")
+    private Calendar sentAt;
     private Calendar edited_at;
     private Boolean is_deleted = false;
 
@@ -38,8 +41,8 @@ public class MessageModel implements Serializable{
     @ManyToOne @JoinColumn(name = "chat_id")
     private ChatModel chat;
 
-    public MessageModel(String content, Calendar sent_at){
+    public MessageModel(String content, Calendar sentAt){
         this.content = content;
-        this.sent_at = sent_at;
+        this.sentAt = sentAt;
     }
 }
