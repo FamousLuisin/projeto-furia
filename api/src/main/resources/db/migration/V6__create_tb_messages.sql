@@ -6,6 +6,7 @@ CREATE TABLE tb_messages (
     is_deleted BOOLEAN DEFAULT FALSE,
     chat_id UUID NOT NULL,
     sender_id UUID NOT NULL,
+    is_bot BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_message_chat
         FOREIGN KEY (chat_id)
         REFERENCES tb_chats(id)

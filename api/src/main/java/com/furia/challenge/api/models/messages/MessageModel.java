@@ -34,6 +34,7 @@ public class MessageModel implements Serializable{
     private Calendar sentAt;
     private Calendar edited_at;
     private Boolean is_deleted = false;
+    private Boolean is_bot = false;
 
     @ManyToOne @JoinColumn(name = "sender_id")
     private UserModel user;

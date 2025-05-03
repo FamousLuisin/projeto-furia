@@ -12,4 +12,5 @@ public class MessageDto {
     private String username;
     private String content;
     private Calendar sent_at;
+    private boolean is_bot;
 }

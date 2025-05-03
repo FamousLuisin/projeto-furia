@@ -14,6 +14,7 @@ interface MessageOutput {
   content: string;
   sent_at: string;
   username: string;
+  is_bot?: boolean;
 }
 
 interface LiveChatModalProps {
@@ -183,6 +184,7 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
                 key={message.id}
                 className={cn(
                   "flex items-start p-3 rounded-xl transition-all duration-200",
+                  message.is_bot && "bg-blue-400 border-blue-300 mr-8",
                   message.username === username
                     ? "bg-neutral-800 border border-neutral-700 ml-8"
                     : "bg-neutral-900 border border-neutral-700 mr-8"
