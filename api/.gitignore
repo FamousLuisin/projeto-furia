@@ -1,3 +1,8 @@
+### keys and .env ###
+src/main/resources/private.key
+src/main/resources/public.key
+.env
+
 HELP.md
 .gradle
 build/
