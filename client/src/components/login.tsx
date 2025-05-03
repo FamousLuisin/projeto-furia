@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, Loader2, MessageCircle } from "lucide-react";
+import { AlertCircle, Loader2, LogIn } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -63,11 +63,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md flex flex-col bg-neutral-900/90 text-white rounded-xl overflow-hidden border border-neutral-800 shadow-lg backdrop-blur-sm">
         <div className="border-b border-neutral-800 py-4 px-6">
           <div className="text-xl font-bold flex gap-3 items-center">
-            <MessageCircle
-              size={22}
-              className="text-red-500"
-              strokeWidth={2.25}
-            />
+            <LogIn size={22} className="text-white" strokeWidth={2.25} />
             <span>Login</span>
           </div>
         </div>
@@ -94,7 +90,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
@@ -105,7 +101,7 @@ export default function LoginPage() {
               </Label>
               <a
                 href="/forgot-password"
-                className="text-sm text-neutral-400 hover:text-red-500 transition-colors"
+                className="text-sm text-neutral-400 hover:text-white transition-colors"
               >
                 Forgot password?
               </a>
@@ -116,12 +112,12 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
           <Button
-            className="w-full bg-red-900 hover:bg-red-800 text-white transition-colors"
+            className="bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
             type="submit"
             disabled={isLoading}
           >
@@ -138,7 +134,7 @@ export default function LoginPage() {
 
         <div className="px-6 pb-6 text-center text-sm border-t border-neutral-800 pt-4">
           Don&apos;t have an account?{" "}
-          <a href="/register" className="text-red-500 hover:underline">
+          <a href="/register" className="text-neutral-400 hover:underline">
             Sign up
           </a>
         </div>

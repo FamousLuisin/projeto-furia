@@ -25,12 +25,6 @@ export default function Header() {
             >
               Login
             </a>
-            <a
-              href="/chat"
-              className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-            >
-              Chat
-            </a>
           </nav>
         </div>
       </div>

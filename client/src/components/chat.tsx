@@ -4,8 +4,9 @@ import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { Client, type IMessage } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-
-import { MessageCircle, Send, AlertCircle } from "lucide-react";
+import { MessageCircle, Send, AlertCircle, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { UUID } from "crypto";
 
 interface MessageOutput {
@@ -15,7 +16,12 @@ interface MessageOutput {
   username: string;
 }
 
-export default function LiveChat() {
+interface LiveChatModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
   const [messages, setMessages] = useState<MessageOutput[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [connectionError, setConnectionError] = useState(false);
@@ -24,8 +30,9 @@ export default function LiveChat() {
   const username = getSubFromToken();
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8080/furia-livechat-websocket");
+    if (!isOpen) return;
 
+    const socket = new SockJS("http://localhost:8080/furia-livechat-websocket");
     const token = localStorage.getItem("token");
 
     const stompClient = new Client({
@@ -58,7 +65,7 @@ export default function LiveChat() {
     return () => {
       stompClient.deactivate();
     };
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -131,25 +138,35 @@ export default function LiveChat() {
     }
   }
 
+  if (!isOpen) return null;
+
   return (
-    <div className="flex flex-col items-center flex-grow justify-center w-full px-4">
-      <div className="w-full max-w-5xl flex flex-col flex-grow bg-neutral-900/90 text-white rounded-xl overflow-hidden border border-neutral-800 shadow-lg backdrop-blur-sm">
-        <div className="border-b border-neutral-800 py-4 px-6">
-          <div className="text-xl font-bold flex gap-3 items-center">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="w-full max-w-2xl flex flex-col bg-neutral-900 text-white rounded-xl overflow-hidden border border-neutral-800 shadow-lg animate-in fade-in duration-300">
+        <div className="border-b border-neutral-800 py-3 px-4 flex justify-between items-center">
+          <div className="text-lg font-bold flex gap-3 items-center">
             <MessageCircle
-              size={22}
+              size={20}
               className="text-white"
               strokeWidth={2.25}
             />
             <span>CS:GO</span>
-            <span className="inline-flex ml-2 h-2 w-2 rounded-full bg-red-500"></span>
+            <span className="inline-flex ml-2 h-2 w-2 rounded-full bg-green-500"></span>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-neutral-400 hover:text-white hover:bg-neutral-800"
+          >
+            <X size={20} />
+          </Button>
         </div>
 
         <div className="flex-grow overflow-hidden scrollbar">
-          <div className="h-[65vh] overflow-y-auto p-4 space-y-3">
+          <div className="h-[50vh] overflow-y-auto p-4 space-y-3">
             {connectionError && (
-              <div className="bg-red-900/70 border border-red-700 text-white p-4 rounded-lg mb-4">
+              <div className="bg-neutral-800 border border-neutral-700 text-white p-4 rounded-lg mb-4">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-4 w-4" />
                   <p className="font-semibold">Erro de Conexão</p>
@@ -164,20 +181,22 @@ export default function LiveChat() {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex items-start p-3 rounded-xl transition-all duration-200 ${
+                className={cn(
+                  "flex items-start p-3 rounded-xl transition-all duration-200",
                   message.username === username
-                    ? "bg-red-900/10 hover:bg-red-900/20 border border-red-900/20"
-                    : "hover:bg-white/5 border border-neutral-800"
-                }`}
+                    ? "bg-neutral-800 border border-neutral-700 ml-8"
+                    : "bg-neutral-900 border border-neutral-700 mr-8"
+                )}
               >
                 <div className="flex flex-col w-full">
                   <div className="flex items-center space-x-3">
                     <span
-                      className={`font-medium ${
-                        message.username === "Você"
-                          ? "text-red-500"
-                          : "text-white"
-                      }`}
+                      className={cn(
+                        "font-medium",
+                        message.username === username
+                          ? "text-white"
+                          : "text-neutral-300"
+                      )}
                     >
                       {message.username}
                     </span>
@@ -193,21 +212,24 @@ export default function LiveChat() {
           </div>
         </div>
 
-        <div className="px-4 py-4 border-t border-neutral-800 bg-black">
-          <form onSubmit={handleSubmit} className="flex w-full space-x-2">
+        <div className="px-4 py-4 border-t border-neutral-800">
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center w-full space-x-2"
+          >
             <input
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Digite sua mensagem..."
-              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
-            <button
-              className="bg-red-900 hover:bg-red-800 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
+            <Button
+              className="bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
               type="submit"
             >
               <Send className="h-4 w-4" />
               <span>Enviar</span>
-            </button>
+            </Button>
           </form>
         </div>
       </div>

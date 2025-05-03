@@ -88,7 +88,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md flex flex-col bg-neutral-900/90 text-white rounded-xl overflow-hidden border border-neutral-800 shadow-lg backdrop-blur-sm">
         <div className="border-b border-neutral-800 py-4 px-6">
           <div className="text-xl font-bold flex gap-3 items-center">
-            <UserPlus size={22} className="text-red-500" strokeWidth={2.25} />
+            <UserPlus size={22} className="text-white" strokeWidth={2.25} />
             <span>Register</span>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 required
-                className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+                className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
               />
             </div>
 
@@ -129,7 +129,7 @@ export default function RegisterPage() {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
-                className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+                className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
               />
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function RegisterPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
@@ -159,7 +159,7 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
@@ -175,7 +175,7 @@ export default function RegisterPage() {
               onChange={handleCPFChange}
               maxLength={14}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
@@ -189,7 +189,7 @@ export default function RegisterPage() {
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
               required
-              className="bg-neutral-900 flex justify-between border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
@@ -203,7 +203,7 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
@@ -217,12 +217,12 @@ export default function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-500 focus:ring-red-500/50 focus:border-red-500/50"
+              className="flex-grow bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 focus:border-neutral-500"
             />
           </div>
 
           <Button
-            className="w-full bg-red-900 hover:bg-red-800 text-white transition-colors"
+            className="bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
             type="submit"
             disabled={isLoading}
           >
@@ -239,7 +239,7 @@ export default function RegisterPage() {
 
         <div className="px-6 pb-6 text-center text-sm border-t border-neutral-800 pt-4">
           Already have an account?{" "}
-          <a href="/login" className="text-red-500 hover:underline">
+          <a href="/login" className="text-neutral-400 hover:underline">
             Sign in
           </a>
         </div>

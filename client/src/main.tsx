@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import Chat from "./components/chat.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Header from "./components/header.tsx";
 import LoginPage from "./components/login.tsx";
@@ -13,10 +12,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/chat",
-    element: <Chat />,
   },
   {
     path: "/login",
@@ -30,7 +25,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <div className="w-full min-h-screen h-full bg-neutral-950 flex flex-col items-center space-y-5">
+    <div className="w-full min-h-screen h-full bg-neutral-950 flex flex-col items-center">
       <Header />
       <RouterProvider router={router} />
       <Footer />
