@@ -83,7 +83,7 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
     }).format(date);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim() === "") return;
 
@@ -93,12 +93,45 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
       sent_at: new Date().toISOString(),
     };
 
-    stompClientRef.current?.publish({
-      destination: "/furia/livechat/message",
-      body: JSON.stringify(messageToSend),
-    });
+    if (newMessage.startsWith("@bot ")) {
+      const chatbotMessage = {
+        username: username,
+        content: newMessage,
+        sent_at: new Date().toISOString(),
+      };
 
-    setNewMessage("");
+      try {
+        const token = localStorage.getItem("token");
+        setNewMessage("");
+
+        const response = await fetch("http://localhost:8080/chatbot", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(chatbotMessage),
+        });
+
+        if (response.ok) {
+          const botResponse: MessageOutput[] = await response.json();
+          console.log("Resposta do chatbot:", botResponse);
+          setMessages((prev) => [...prev, ...botResponse]);
+        } else {
+          console.error("Erro ao enviar mensagem para o chatbot.");
+          setNewMessage("");
+        }
+      } catch (error) {
+        console.error("Erro ao enviar mensagem para o chatbot:", error);
+        setNewMessage("");
+      }
+    } else {
+      stompClientRef.current?.publish({
+        destination: "/furia/livechat/message",
+        body: JSON.stringify(messageToSend),
+      });
+      setNewMessage("");
+    }
   };
 
   async function getMessages() {
@@ -184,10 +217,10 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
                 key={message.id}
                 className={cn(
                   "flex items-start p-3 rounded-xl transition-all duration-200",
-                  message.is_bot && "bg-blue-400 border-blue-300 mr-8",
                   message.username === username
                     ? "bg-neutral-800 border border-neutral-700 ml-8"
-                    : "bg-neutral-900 border border-neutral-700 mr-8"
+                    : "bg-neutral-900 border border-neutral-700 mr-8",
+                  message.is_bot && "bg-blue-400 border-blue-300 mr-8"
                 )}
               >
                 <div className="flex flex-col w-full">
@@ -197,16 +230,24 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
                         "font-medium",
                         message.username === username
                           ? "text-white"
-                          : "text-neutral-300"
+                          : "text-neutral-300",
+                        message.is_bot && "text-white"
                       )}
                     >
                       {message.username}
                     </span>
-                    <span className="text-xs text-neutral-500">
+                    <span
+                      className={cn(
+                        "text-xs text-neutral-500",
+                        message.is_bot && "text-neutral-50"
+                      )}
+                    >
                       {formatDate(message.sent_at)}
                     </span>
                   </div>
-                  <div className="mt-1 text-white">{message.content}</div>
+                  <div className="mt-1 text-white whitespace-pre-line">
+                    {message.content}
+                  </div>
                 </div>
               </div>
             ))}

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -30,15 +31,22 @@ public class MessageController {
     private ChatRepository chatRepository;
     
     @GetMapping
-    public ResponseEntity<?> getMessages() {
+    public ResponseEntity<?> getMessages(JwtAuthenticationToken token) {
         Optional<ChatModel> chatCs = chatRepository.findByTitle("cs:go");
+        Optional<ChatModel> chatBot = chatRepository.findByTitle(token.getName() + "Bot");
 
         List<MessageModel> messages;
+        List<ChatModel> chats;
 
         if (chatCs.isPresent()) {
-            messages = messageRepository.findByChatOrderBySentAt(chatCs.get());
+            if (chatBot.isPresent()) {
+                chats = List.of(chatCs.get(), chatBot.get());
+            } else {
+                chats = List.of(chatCs.get());
+            }
+            messages = messageRepository.findByChatInOrderBySentAt(chats);
         } else {
-            messages = new ArrayList<>(); // Use ArrayList ou outra implementação de List
+            messages = new ArrayList<>();
         }
 
         List<MessageDto> dto = messages.stream().map(message -> {
@@ -47,6 +55,7 @@ public class MessageController {
                 newDto.setUsername(message.getUser().getUsername());
                 newDto.setId(message.getId());
                 newDto.setSent_at(message.getSentAt());
+                newDto.setIs_bot(message.getIs_bot());
 
                 return newDto;
         }).collect(Collectors.toList());

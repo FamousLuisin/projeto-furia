@@ -64,7 +64,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error: usuario ou senha inválidos");
         }
 
-        var expiresIn = 600L;
+        var expiresIn = 600000L;
         var now = Instant.now();
 
         var claims = JwtClaimsSet.builder()

@@ -13,5 +13,5 @@ import com.furia.challenge.api.models.chats.ChatModel;
 @Repository
 public interface MessageRepository extends JpaRepository<MessageModel, UUID> {
     
-    List<MessageModel> findByChatOrderBySentAt(ChatModel chat);
+    List<MessageModel> findByChatInOrderBySentAt(List<ChatModel> chats);
 }
