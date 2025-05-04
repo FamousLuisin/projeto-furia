@@ -71,7 +71,11 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col p-6 space-y-6">
+          <form
+            autoComplete="off"
+            onSubmit={handleSubmit}
+            className="flex flex-col p-6 space-y-6"
+          >
             {error && (
               <div className="bg-red-900/70 border border-red-700 text-white p-4 rounded-lg">
                 <div className="flex items-center gap-2">
