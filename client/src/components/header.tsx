@@ -1,4 +1,17 @@
+import { useEffect, useState } from "react";
+
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
   return (
     <header className="w-11/12 max-w-5xl py-4 space-y-2">
       {/* Desktop Navigation */}
@@ -14,24 +27,31 @@ export default function Header() {
             >
               Home
             </a>
-            <a
-              href="/register"
-              className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-            >
-              Register
-            </a>
-            <a
-              href="/login"
-              className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-            >
-              Login
-            </a>
-            <a
-              href="/chat"
-              className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-            >
-              Chat
-            </a>
+
+            {!isLoggedIn ? (
+              <>
+                <a
+                  href="/register"
+                  className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+                >
+                  Register
+                </a>
+                <a
+                  href="/login"
+                  className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+                >
+                  Login
+                </a>
+              </>
+            ) : (
+              <a
+                href="/"
+                onClick={handleLogout}
+                className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+              >
+                Logout
+              </a>
+            )}
           </nav>
         </div>
       </div>
@@ -48,24 +68,31 @@ export default function Header() {
           >
             Home
           </a>
-          <a
-            href="/register"
-            className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-          >
-            Register
-          </a>
-          <a
-            href="/login"
-            className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-          >
-            Login
-          </a>
-          <a
-            href="/chat"
-            className="text-white/80 hover:text-white text-sm font-medium transition-colors"
-          >
-            Chat
-          </a>
+
+          {!isLoggedIn ? (
+            <>
+              <a
+                href="/register"
+                className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+              >
+                Register
+              </a>
+              <a
+                href="/login"
+                className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+              >
+                Login
+              </a>
+            </>
+          ) : (
+            <a
+              href="/"
+              onClick={handleLogout}
+              className="text-white/80 hover:text-white text-sm font-medium transition-colors"
+            >
+              Logout
+            </a>
+          )}
         </div>
       </div>
 

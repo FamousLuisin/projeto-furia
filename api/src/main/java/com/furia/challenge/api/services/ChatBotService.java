@@ -1,5 +1,6 @@
 package com.furia.challenge.api.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,11 @@ public class ChatBotService {
         List<String> calendarKeywords = Arrays.asList("qual é o calendario da equipe?", "me mostre o calendario de jogos", 
         "proximos jogos", "quais são os próximos jogos", "quando é o próximo", "quando vai ser o próximo jogo", 
         "agenda de jogos", "proximo jogo");
+        
+        List<String> lastGamesKeywords = Arrays.asList("quais foram os últimos jogos", "me mostre os últimos jogos",
+        "últimos jogos", "jogos anteriores", "últimas partidas", "quais partidas já aconteceram", "histórico de jogos",
+        "jogos passados", "jogos que já aconteceram", "quando foi o último jogo", "resultados recentes", "partidas passadas",
+        "último jogo");
 
         if (this.containsAny(lower, teamKeywords)) {
             String json = webClientService.webClient("/csgo/teams?filter[slug]=furia");
@@ -35,7 +41,11 @@ public class ChatBotService {
             String json = webClientService.webClient("/csgo/matches/upcoming?filter[opponent_id]=furia");
 
             return calendarioResponse(json);
-        } 
+        } else if (this.containsAny(lower, lastGamesKeywords)){
+            String json = webClientService.webClient("https://api.pandascore.co/csgo/matches/past?filter[opponent_id]=furia&page[size]=3");
+
+            return pastMatchesResponse(json);
+        }
 
         return "Sinto muito Não encontrei nada";
     }
@@ -119,6 +129,56 @@ public class ChatBotService {
 
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    private String pastMatchesResponse(String json){
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            JsonNode rootNode = mapper.readTree(json);
+
+            StringBuilder mensagemFinal = new StringBuilder();
+            mensagemFinal.append("🔥 RESULTADOS DAS PARTIDAS DA FURIA 🔥\n\n");
+
+            for (JsonNode match : rootNode) {
+                JsonNode opponents = match.path("opponents");
+                String team1 = opponents.get(0).path("opponent").path("name").asText();
+                String team2 = opponents.get(1).path("opponent").path("name").asText();
+
+                JsonNode results = match.path("results");
+                int score1 = results.get(0).path("score").asInt();
+                int score2 = results.get(1).path("score").asInt();
+
+                String winner = match.path("winner") != null && match.path("winner").has("name")
+                        ? match.path("winner").path("name").asText()
+                        : "Empate ou não definido";
+
+                String tournament = match.path("tournament").path("name").asText();
+
+                String serie = match.path("serie").path("full_name").asText();
+                String dateString = match.path("begin_at").asText();
+                String datePart = dateString.split("T")[0];
+                String timePart = dateString.split("T")[1].split("Z")[0];
+                String[] timeSplit = timePart.split(":");
+                String formattedTime = timeSplit[0] + "h" + timeSplit[1] + "min";
+
+                String matchName = match.path("name").asText();
+
+                String mensagem = "⚔️ " + matchName + " ⚔️\n" +
+                        "🏆 Torneio: " + tournament + " - Série: " + serie + "\n" +
+                        "🆚 " + team1 + " " + score1 + " x " + score2 + " " + team2 + "\n" +
+                        "🏅 Vencedor: " + winner + "\n" +
+                        "📅 Data: " + datePart + " " + formattedTime + "\n\n";
+
+                mensagemFinal.append(mensagem);
+            }
+
+            return mensagemFinal.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Erro ao processar os dados das partidas.";
         }
     }
 }
