@@ -52,7 +52,7 @@ export default function RegisterPage() {
     };
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
+      const API_URL = process.env.VITE_API_URL;
       await fetch(`${API_URL}/register`, options);
 
       navigate("/login");
