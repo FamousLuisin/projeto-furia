@@ -34,7 +34,8 @@ export default function LoginPage() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/login", options);
+      const API_URL = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${API_URL}/login`, options);
 
       if (response.ok) {
         const data = await response.json();

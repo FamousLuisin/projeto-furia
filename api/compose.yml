@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/furia_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+
+      PANDASCORE_TOKEN: jvjiIV7CCz22PJhMbxIbjqhvPmHT55Au4jJ8MAvmsBpq7Amw1wM
+      BOT_EMAIL: chatbot@furia.com
+      BOT_PASSWORD: senhaDoChatbot123
+      BOT_CPF: 123.456.789-00
+      BOT_FIRST_NAME: Chat
+      BOT_LAST_NAME: Bot
+      BOT_USERNAME: chat bot ai
