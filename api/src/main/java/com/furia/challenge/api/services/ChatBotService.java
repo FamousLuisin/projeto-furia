@@ -42,7 +42,7 @@ public class ChatBotService {
 
             return calendarioResponse(json);
         } else if (this.containsAny(lower, lastGamesKeywords)){
-            String json = webClientService.webClient("https://api.pandascore.co/csgo/matches/past?filter[opponent_id]=furia&page[size]=3");
+            String json = webClientService.webClient("/csgo/matches/past?filter[opponent_id]=furia&page[size]=3");
 
             return pastMatchesResponse(json);
         }

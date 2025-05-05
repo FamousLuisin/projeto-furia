@@ -52,9 +52,12 @@ export default function RegisterPage() {
     };
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL;
-      console.log(API_URL);
-      await fetch(`${API_URL}/register`, options);
+      let api_url = import.meta.env.VITE_API_URL;
+
+      if (api_url === undefined) {
+        api_url = "http://localhost:8080";
+      }
+      await fetch(`${api_url}/register`, options);
 
       navigate("/login");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -33,8 +33,13 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
   useEffect(() => {
     if (!isOpen) return;
 
-    const API_URL = process.env.REACT_APP_API_URL;
-    const socket = new SockJS(`${API_URL}/furia-livechat-websocket`);
+    let api_url = import.meta.env.VITE_API_URL;
+
+    if (api_url === undefined) {
+      api_url = "http://localhost:8080";
+    }
+
+    const socket = new SockJS(`${api_url}/furia-livechat-websocket`);
     const token = localStorage.getItem("token");
 
     const stompClient = new Client({
@@ -105,8 +110,13 @@ export default function LiveChatModal({ isOpen, onClose }: LiveChatModalProps) {
         const token = localStorage.getItem("token");
         setNewMessage("");
 
-        const API_URL = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${API_URL}/chatbot`, {
+        let api_url = import.meta.env.VITE_API_URL;
+
+        if (api_url === undefined) {
+          api_url = "http://localhost:8080";
+        }
+
+        const response = await fetch(`${api_url}/chatbot`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

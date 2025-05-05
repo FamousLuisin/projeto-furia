@@ -34,8 +34,13 @@ export default function LoginPage() {
     };
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${API_URL}/login`, options);
+      let api_url = import.meta.env.VITE_API_URL;
+
+      if (api_url === undefined) {
+        api_url = "http://localhost:8080";
+      }
+
+      const response = await fetch(`${api_url}/login`, options);
 
       if (response.ok) {
         const data = await response.json();
