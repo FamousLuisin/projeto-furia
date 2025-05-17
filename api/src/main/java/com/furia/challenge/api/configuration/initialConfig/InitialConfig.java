@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.furia.challenge.api.models.chats.ChatModel;
 import com.furia.challenge.api.models.users.UserModel;
@@ -23,6 +24,9 @@ public class InitialConfig implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -54,7 +58,7 @@ public class InitialConfig implements CommandLineRunner {
             bot.setCpf(botCpf);
             bot.setUsername(botUsername);
             bot.setBirth_date(Calendar.getInstance());
-            bot.setPassword(botPassword);
+            bot.setPassword(passwordEncoder.encode(botPassword));
 
             bot.setIs_active(true);
             bot.setIs_verified(true);
